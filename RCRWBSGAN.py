@@ -1,13 +1,4 @@
-# Copyright (c) 2018, Curious AI Ltd. All rights reserved.
-#
-# This work is licensed under the Creative Commons Attribution-NonCommercial
-# 4.0 International License. To view a copy of this license, visit
-# http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to
-# Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-# Thank the authors of mean teacher.
-# The github address is https://github.com/CuriousAI/mean-teacher
-# Our code is widely adapted from their repositories.
 import logging
 
 import re
@@ -56,8 +47,6 @@ def nll_loss_neg2(y_pred, y_true):
 
 
 class generator(nn.Module):  # # #
-    # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
-    # Architecture : FC1024_BR-FC7x7x128_BR-(64)4dc2s_BR-(1)4dc2s_S
     def __init__(self, input_dim=100, output_dim=1, input_size=32):
         super(generator, self).__init__()
         self.input_dim = input_dim
@@ -73,7 +62,7 @@ class generator(nn.Module):  # # #
             nn.ReLU(),
         )
         self.deconv = nn.Sequential(
-            nn.ConvTranspose2d(128, 64, 4, 2, 1),   # 4,2,1可以将大小扩大一倍
+            nn.ConvTranspose2d(128, 64, 4, 2, 1),   # 4,2,1
             nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.ConvTranspose2d(64, self.output_dim, 4, 2, 1),
@@ -88,10 +77,7 @@ class generator(nn.Module):  # # #
 
         return x
 
-# batch_size * input_dim * input_size * input_size => batch_size * output_dim
 class discriminator(nn.Module):  # # #
-    # Network Architecture is exactly same as in infoGAN (https://arxiv.org/abs/1606.03657)
-    # Architecture : (64)4c2s-(128)4c2s_BL-FC1024_BL-FC1_S
     def __init__(self, input_dim=1, output_dim=1, input_size=32):
         super(discriminator, self).__init__()
         self.input_dim = input_dim
@@ -99,7 +85,7 @@ class discriminator(nn.Module):  # # #
         self.input_size = input_size
 
         self.conv = nn.Sequential(
-            nn.Conv2d(self.input_dim, 64, 4, 2, 1), # 4，2，1缩小1倍
+            nn.Conv2d(self.input_dim, 64, 4, 2, 1), 
             nn.LeakyReLU(0.2),
             nn.Conv2d(64, 128, 4, 2, 1),
             nn.BatchNorm2d(128),
@@ -135,7 +121,6 @@ class discriminator(nn.Module):  # # #
 
 import os
 import sys
-# from tensorboardX import SummaryWriter
 import shutil
 import argparse
 import logging
@@ -174,7 +159,7 @@ parser.add_argument('--batch_size', type=int, default=64, help='batch_size per g
 parser.add_argument('--labeled_bs', type=int, default=12, help='number of labeled data per batch')
 parser.add_argument('--drop_rate', type=int, default=0.2, help='dropout rate')
 parser.add_argument('--ema_consistency', type=int, default=1, help='whether train baseline model')
-parser.add_argument('--labeled_num', type=int, default=3000, help='number of labeled')
+parser.add_argument('--labeled_num', type=int, default=1400, help='number of labeled')
 parser.add_argument('--base_lr', type=float,  default=1e-4, help='maximum epoch number to train')
 parser.add_argument('--deterministic', type=int,  default=1, help='whether use deterministic training')
 parser.add_argument('--seed', type=int,  default=1337, help='random seed')
@@ -242,7 +227,6 @@ if args.deterministic:
     torch.cuda.manual_seed(args.seed)
 
 def get_current_consistency_weight(epoch):
-    # Consistency ramp-up from https://arxiv.org/abs/1610.02242
 
     return args.consistency * ramps.sigmoid_rampup(epoch, args.consistency_rampup)
 
@@ -364,7 +348,7 @@ if __name__ == "__main__":
                                           ]))
 
     labeled_idxs = list(range(args.labeled_num))
-    unlabeled_idxs = list(range(args.labeled_num, 49000))
+    unlabeled_idxs = list(range(args.labeled_num, 10000))
     batch_sampler = TwoStreamBatchSampler(labeled_idxs, unlabeled_idxs, batch_size, batch_size-labeled_bs)
 
     def worker_init_fn(worker_id):
@@ -476,7 +460,7 @@ if __name__ == "__main__":
 
 
 
-            if (epoch > 3) and (args.ema_consistency == 1):
+            if (epoch > 10) and (args.ema_consistency == 1):
                 loss = loss_classification + consistency_loss +  consistency_relation_loss+(generated_weight(epoch) * C_fake_loss)
 
 
@@ -570,7 +554,7 @@ if __name__ == "__main__":
 
             D_loss = D_real_loss + D_fake_loss
 
-            if (epoch>3):
+            if (epoch>10):
               D_loss = D_real_loss + D_fake_loss+((L_reall1+L_D_fake1)*0.1)+L_dis*0.1+consistency_relation_distul*0.1+consistency_relation_distdf*0.1+consistency_relation_distdtzf*0.1
 
 
@@ -610,7 +594,7 @@ if __name__ == "__main__":
             G_loss=G_loss_D
 
             #G_loss = G_loss_D + generated_weight(epoch) * G_loss_C+L_gen*0.5
-            if epoch>3:
+            if epoch>10:
               G_loss=G_loss_D + generated_weight(epoch) * G_loss_C+L_gen*0.1+consistency_relation_distfg*0.1
             
             G_loss.backward()
