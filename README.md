@@ -29,8 +29,11 @@ To use the WB-SGAN-IRC algorithm, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Install the required dependencies by running `pip install -r requirements.txt`.
-3. Configure the training parameters and dataset paths in the provided configuration file.
-4. Evaluate the trained model using `RCRWBSGAN.py`.
+3. It is needed GPU RTX 3090 , 64 gig RAM.
+4. Configure the training parameters and dataset paths in the provided configuration file.
+5. for run go to PAD-UFES folder and run PAD_UFES_data_preprocess.ipynb.
+6. for run go to ISIS-2020 folder and run ISIC_2020_data_preprocess.ipynb.
+   
 
 
 ## Results
