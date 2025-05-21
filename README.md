@@ -1,4 +1,4 @@
-# weighted bad semi-supervised generative adversarial networks with individual-relational consistency regularization (WB-SGAN-IRC). 
+# Semi-Supervised Generative Adversarial Networks for Imbalanced Skin Lesion Diagnosis with an Unbiased Generator and Informative Images. 
 A Novel Individual-Relational Consistency for Bad Semi-Supervised Generative Adversarial Networks in Skin Lesion Diagnosis 
 
 ## Table of Contents
@@ -13,12 +13,9 @@ A Novel Individual-Relational Consistency for Bad Semi-Supervised Generative Adv
 
 ## Authors
 
-- Mohammad Saber Iraji
-- Jafar Tanha (Corresponding author: tanha@tabrizu.ac.ir, jafar.tanha.pnu@gmail.com)
-- Mohammad-Ali Balafar
-- Mohammad-Reza Feizi-Derakhshi
+- Mohammad Saber Iraji (Corresponding author:iraji.ms@pnu.ac.ir)
 
-This work was conducted by researchers from the Department of Computer Engineering, Faculty of Electrical and Computer Engineering, University of Tabriz, Tabriz, Iran.
+This work was conducted by researchers from the Department of Computer Engineering and Information Technology , Payame Noor University (PNU) , Tehran , Iran.
 
 ## Abstract
 
