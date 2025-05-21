@@ -592,11 +592,11 @@ if args.dataset == 'mnist':
 ### lists for collecting output statistics###
 ### lists for collecting output statistics###
 wcw2 = np.ones(num_classes)
-#CLASS_NUM = [29287   ,525]
-#normedWeights = [1 - (x / sum(CLASS_NUM)) for x in CLASS_NUM]
-#print(normedWeights)
-#normedWeights
-#CLASS_WEIGHT= torch.Tensor(normedWeights).cuda()
+CLASS_NUM = [657, 760, 46, 219, 172, 211]
+normedWeights = [1 - (x / sum(CLASS_NUM)) for x in CLASS_NUM]
+print(normedWeights)
+normedWeights
+CLASS_WEIGHT= torch.Tensor(normedWeights).cuda()
 print(wcw2)
 wcw2 = torch.Tensor(wcw2 ).cuda()
 
