@@ -1,5 +1,4 @@
 # Semi-Supervised Generative Adversarial Networks for Imbalanced Skin Lesion Diagnosis with an Unbiased Generator and Informative Images. 
-A Novel Individual-Relational Consistency for Bad Semi-Supervised Generative Adversarial Networks in Skin Lesion Diagnosis 
 
 ## Table of Contents
 - [Authors](#authors)
